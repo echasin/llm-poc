@@ -1,9 +1,6 @@
-# Install Libraries
-# pip install unstructured --user
-
-
 # importing libraries
 import os
+from dotenv import load_dotenv
 import openai
 import pinecone
 import langchain
@@ -15,18 +12,23 @@ from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 from langchain.chains import RetrievalQA
 
-# OpenAI credentials
-openai_api_key = "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"
+# Load the environment variables from the .env file.
+load_dotenv()
 
+# Get the value of the API_KEY environment variable.
+
+# OpenAI credentials
+api_key = os.getenv('openai_api_key')
 # Pinecone credentials
-api_key = "ef9a9434-5233-4b29-a794-355b106be8d7"
-environment = "us-west4-gcp-free"
-index_name = "techplaybook-dev"
+
+api_key = os.getenv('api_key')
+environment = os.getenv('environment')
+index_name = os.getenv('index_name')
 
 # Create the vector store object
 pinecone.init(
-    api_key="ef9a9434-5233-4b29-a794-355b106be8d7",
-    environment="us-west4-gcp-free"
+    api_key= api_key, # type: ignore
+    environment= environment # type: ignore
 )
 
 index_name = "techplaybook-dev"
@@ -70,7 +72,7 @@ def get_similiar_docs(query, k=2, score=True):
 
 
 docs = docsearch.similarity_search(query)
-
+ 
 # print(docs[0].page_content)
 
 # found_docs = docsearch.max_marginal_relevance_search(query, k=2, fetch_k=10)

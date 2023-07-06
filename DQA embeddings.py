@@ -1,7 +1,7 @@
 # Issues
 # 1. If you rerun the is code it will upsert new embeddings into the index. 
 # 2. It creates 5880 Vectors
-# 3. How can set metadata in the pinecone index to stores the filename
+# 3. How can set metadata in the pinecone index to stores the filename and embedding data at the document level
 # 4. How can pinecone return metadata do we can track what documents have been processed in database
 
 # importing libraries
