@@ -1,5 +1,5 @@
 # Issues
-# 1. If you rerun the is code it will upsert new embeddings into the index. 
+# 1. If you rerun the is code  codes not upsert new embeddings into the index. 
 # 2. It creates 5880 Vectors
 # 3. How can set metadata in the pinecone index to stores the filename and embedding data at the document level
 # 4. How can pinecone return metadata do we can track what documents have been processed in database
@@ -17,21 +17,18 @@ from langchain.vectorstores import Pinecone
 from langchain.llms import OpenAI
 from langchain.chains.question_answering import load_qa_chain
 
-# Load the environment variables from the .env file.
+# Loading environment variables
 load_dotenv()
+openai.api_key = os.getenv('OPENAI_API_KEY')
+PINECONE_API_KEY = os.getenv('PINECONE_API_KEY')
+PINECONE_ENV = os.getenv('PINECONE_ENV')
+INDEX_NAME= os.getenv('INDEX_NAME')
 
-# Get the value of the API_KEY environment variable.
-
-# OpenAI credentials
-api_key = os.getenv('openai_api_key')
-# Pinecone credentials
-
-api_key = os.getenv('api_key')
-environment = os.getenv('environment')
-index_name = os.getenv('index_name')
+# Clearing the Screen
+os.system('clear')
 
 # Source Files
-directory_path = '.\dataset'
+directory_path = './dataset'
 
 # Load the documents
 def load_docs(directory_path):
@@ -54,11 +51,12 @@ print("Length of documents: ", len(docs))
 # Create the embeddings object
 embeddings = OpenAIEmbeddings(model ="text-embedding-ada-002") # type: ignore
 
-#  Create the vector store object
+# Connect to  pinecone index 
 pinecone.init(
-    api_key  = api_key , # type: ignore
-    environment = environment) # type: ignore
-
-
+    api_key= PINECONE_API_KEY, # type: ignore
+    environment=PINECONE_ENV # type: ignore
+)
+# Load index
+index_name = INDEX_NAME
+index = Pinecone.from_documents(docs, embeddings, index_name=index_name)
 print("index_name: ", index_name)
-
