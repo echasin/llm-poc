@@ -38,6 +38,9 @@ def load_docs(directory_path):
 
 documents = load_docs(directory_path)
 print("Total number of documents :",len(documents))
+print("First document: ", documents[0].metadata) 
+
+
 
 # Document Splitting for Efficient Processing with LangChain:
 def split_docs(documents, chunk_size=500, chunk_overlap=20):
@@ -58,5 +61,15 @@ pinecone.init(
 )
 # Load index
 index_name = INDEX_NAME
-index = Pinecone.from_documents(docs, embeddings, index_name=index_name)
-print("index_name: ", index_name)
+# index = Pinecone.from_documents(docs, embeddings, index_name=index_name)
+# print("index_name: ", index_name)
+
+# Initialize the Pinecone client
+pinecone_client = pinecone.Index(index_name) # type: ignore
+
+# Use the upsert function to insert/update the vectors
+doc_names = [document.metadata for document in documents]  # type: ignore
+print("doc_names: ", doc_names)
+
+
+
